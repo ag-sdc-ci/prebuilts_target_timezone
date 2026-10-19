@@ -1,0 +1,6 @@
+shadow prebuilt repo: timezone (target, com.android.tzdata)
+  upstream: system/timezone
+  api-level: 34 (branch 34-20261019)
+  blobs: com.android.tzdata.apex
+  dev-src: extracted base payload + regenerated root Android.bp
+  date: 2026-10-19

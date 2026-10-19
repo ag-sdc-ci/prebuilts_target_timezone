@@ -1,0 +1,155 @@
+package {
+    default_applicable_licenses: ["system_timezone_license"],
+}
+
+license {
+    name: "system_timezone_license",
+    visibility: [":__subpackages__"],
+    license_kinds: [
+        "SPDX-license-identifier-Apache-2.0",
+        "SPDX-license-identifier-BSD",
+        "legacy_unencumbered",
+    ],
+    license_text: [
+        "NOTICE",
+    ],
+}
+
+prebuilt_apex {
+    name: "com.android.tzdata",
+    apex_name: "com.android.tzdata",
+    source_apex_name: "com.android.tzdata",
+    arch: {
+        x86_64: {
+            src: "com.android.tzdata.apex",
+        },
+    },
+    filename: "com.android.tzdata.apex",
+    prefer: true,
+    installable: true,
+}
+
+prebuilt_etc {
+    name: "apex_tz_version",
+    src: "etc/tz/tz_version",
+    filename: "tz_version",
+    sub_dir: "tz",
+    installable: false,
+    prefer: true,
+}
+
+prebuilt_etc {
+    name: "apex_tzlookup.xml",
+    src: "etc/tz/tzlookup.xml",
+    filename: "tzlookup.xml",
+    sub_dir: "tz",
+    installable: false,
+    prefer: true,
+}
+
+prebuilt_etc {
+    name: "apex_telephonylookup.xml",
+    src: "etc/tz/telephonylookup.xml",
+    filename: "telephonylookup.xml",
+    sub_dir: "tz",
+    installable: false,
+    prefer: true,
+}
+
+prebuilt_etc {
+    name: "apex_tzdata",
+    src: "etc/tz/tzdata",
+    filename: "tzdata",
+    sub_dir: "tz",
+    installable: false,
+    prefer: true,
+}
+
+prebuilt_etc {
+    name: "apex_icu_tzdata.dat",
+    src: "etc/icu/icu_tzdata.dat",
+    filename: "icu_tzdata.dat",
+    sub_dir: "icu",
+    installable: false,
+    prefer: true,
+}
+
+prebuilt_usr_share {
+    name: "tzdata_prebuilt",
+    src: "etc/tz/tzdata",
+    filename_from_src: true,
+    sub_dir: "zoneinfo",
+    prefer: true,
+}
+
+prebuilt_usr_share_host {
+    name: "tzdata_host",
+    src: "etc/tz/tzdata",
+    filename_from_src: true,
+    sub_dir: "zoneinfo",
+    prefer: true,
+}
+
+prebuilt_etc {
+    name: "tzlookup.xml_host_tzdata_apex",
+    src: "etc/tz/tzlookup.xml",
+    filename_from_src: true,
+    sub_dir: "tzdata_module/etc/tz",
+    prefer: true,
+}
+
+prebuilt_etc {
+    name: "tz_version_host_tzdata_apex",
+    src: "etc/tz/tz_version",
+    filename_from_src: true,
+    sub_dir: "tzdata_module/etc/tz",
+    prefer: true,
+}
+
+prebuilt_etc {
+    name: "tzdata_host_tzdata_apex",
+    src: "etc/tz/tzdata",
+    filename_from_src: true,
+    sub_dir: "tzdata_module/etc/tz",
+    prefer: true,
+}
+
+prebuilt_etc {
+    name: "icu_tzdata.dat_host_tzdata_apex",
+    src: "etc/icu/icu_tzdata.dat",
+    filename_from_src: true,
+    sub_dir: "tzdata_module/etc/icu",
+    prefer: true,
+}
+
+prebuilt_etc {
+    name: "tzdata-art-test-tzdata",
+    src: "etc/tz/tzdata",
+    filename_from_src: true,
+    sub_dir: "tzdata_module/etc/tz",
+    prefer: true,
+}
+
+prebuilt_etc {
+    name: "icu_overlay-art-test-tzdata",
+    src: "etc/icu/icu_tzdata.dat",
+    filename_from_src: true,
+    sub_dir: "tzdata_module/etc/icu",
+    prefer: true,
+}
+
+java_genrule_host {
+    name: "robolectric_tzdata",
+    out: ["robolectric_tzdata.jar"],
+    tools: ["soong_zip"],
+    srcs: [
+        "etc/tz/tzdata",
+        "etc/tz/tzlookup.xml",
+        "etc/tz/telephonylookup.xml",
+    ],
+    cmd: "mkdir -p $(genDir)/usr/share/zoneinfo/ && " +
+        "cp $(location etc/tz/tzdata) $(genDir)/usr/share/zoneinfo/ && " +
+        "cp $(location etc/tz/tzlookup.xml) $(genDir)/usr/share/zoneinfo/ && " +
+        "cp $(location etc/tz/telephonylookup.xml) $(genDir)/usr/share/zoneinfo/ && " +
+        "$(location soong_zip) -o $(out) -C $(genDir) -D $(genDir)/usr/share/zoneinfo",
+}
